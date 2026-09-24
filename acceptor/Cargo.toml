@@ -1,0 +1,15 @@
+[package]
+name = "hello-web-acceptor"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+packr-guest = { version = "0.24", features = ["derive"] }
+# GraphValue derive on AcceptorState references packr_abi directly.
+packr-abi = { version = "0.24", default-features = false, features = ["derive"] }
+# #[derive(State)] + the get-state export. Pinned to the theater rev whose
+# interface hashes this actor is built against — keep in lockstep with flake.nix.
+theater-guest = { git = "https://github.com/colinrozzi/theater", rev = "00b0bf93fe69a231463d3ba918fa435c5f2a517d" }

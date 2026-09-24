@@ -1,0 +1,11 @@
+[package]
+name = "hello-web-handler"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+# Stateless actor: no in-module state cell, so no theater-guest / packr-abi needed.
+packr-guest = { version = "0.24", features = ["derive"] }

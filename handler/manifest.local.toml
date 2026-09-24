@@ -1,0 +1,14 @@
+# Local plain-HTTP handler manifest — spawned per-connection by the acceptor.
+name = "hello-web-handler"
+version = "0.1.0"
+# This actor is spawned by the acceptor via supervisor.spawn, and a
+# supervisor-spawned manifest's `package` resolves relative to the theater
+# process CWD (the repo root) — so `result/…`, NOT `../result/…`.
+package = "result/hello_web_handler.wasm"
+
+# runtime->self: host-interface handler registry key.
+[[handler]]
+type = "self"
+
+[[handler]]
+type = "tcp"

@@ -1,0 +1,32 @@
+# Local plain-HTTP acceptor manifest. Run from the REPO ROOT:
+#   nix build 'path:.'      # -> result/hello_web_{acceptor,handler}.wasm
+#   theater spawn acceptor/manifest.local.toml   # then curl localhost:9444
+# Config (listen addr, handler manifest path, tls intent) comes from
+# initial_state; no server_tls here -> plain HTTP. A prod deploy uses its own
+# manifest that keeps server_tls and passes tls=on.
+name = "hello-web-acceptor"
+version = "0.1.0"
+# NOTE two different path bases (run `theater spawn` from the repo ROOT):
+#  - `package` is resolved relative to THIS manifest's dir (acceptor/) -> ../result/…
+#  - the `handler=` manifest passed to supervisor.spawn is resolved relative to
+#    the theater process CWD (the repo root) -> handler/… (no ../).
+package = "../result/hello_web_acceptor.wasm"
+initial_state = "listen=0.0.0.0:9444;handler=handler/manifest.local.toml;tls=off"
+
+# Control capabilities (runtime, supervisor) default-DENY on this theater. The
+# acceptor spawns a handler per connection via supervisor.spawn, so grant it.
+[permission_policy.supervisor]
+type = "inherit"
+
+# runtime->self: the host interface (log/shutdown) handler registry key.
+[[handler]]
+type = "self"
+
+[[handler]]
+type = "tcp"
+
+[[handler]]
+type = "supervisor"
+
+[[handler]]
+type = "rpc"

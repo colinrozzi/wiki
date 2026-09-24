@@ -1,6 +1,7 @@
 /result
 /result-*
-target/
+/target
+**/target
 theater-bin
 *.wasm
 .direnv/
