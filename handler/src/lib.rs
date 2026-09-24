@@ -1,4 +1,4 @@
-//! hello-web handler — receives a transferred TCP connection, reads one HTTP
+//! wiki handler — receives a transferred TCP connection, reads one HTTP
 //! request, responds with a placeholder page, and shuts down. Stateless /
 //! opaque, actor-per-connection.
 //!
@@ -88,7 +88,7 @@ fn handle_connection_transfer(connection_id: String) -> Value {
     response.extend_from_slice(body);
 
     if let Err(e) = tcp_send(connection_id.clone(), response) {
-        log(format!("[hello-web-handler] send failed: {}", e));
+        log(format!("[wiki-handler] send failed: {}", e));
     }
     let _ = tcp_close(connection_id);
     let _ = shutdown(None);

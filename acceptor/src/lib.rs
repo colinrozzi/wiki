@@ -174,7 +174,7 @@ fn field(cfg: &str, key: &str) -> Option<String> {
 
 #[export(name = "theater:simple/actor.init")]
 fn init(config: Value) -> Value {
-    log(String::from("[hello-web-acceptor] init"));
+    log(String::from("[wiki-acceptor] init"));
 
     // The manifest's `initial_state` string arrives here verbatim as a
     // Value::String (see theater-cli spawn.rs). Anything else -> use defaults.
@@ -198,7 +198,7 @@ fn init(config: Value) -> Value {
         Err(e) => return err_unit(format!("listen failed: {}", e)),
     };
     log(format!(
-        "[hello-web-acceptor] listening on {} (id={}, tls={}, handler={})",
+        "[wiki-acceptor] listening on {} (id={}, tls={}, handler={})",
         listen_addr, listener_id, tls, handler_manifest
     ));
 
@@ -213,7 +213,7 @@ fn init(config: Value) -> Value {
 #[export(name = "theater:simple/tcp-client.handle-connection")]
 fn handle_connection(connection_id: String) -> Value {
     log(format!(
-        "[hello-web-acceptor] new connection {}",
+        "[wiki-acceptor] new connection {}",
         connection_id
     ));
 
@@ -226,7 +226,7 @@ fn handle_connection(connection_id: String) -> Value {
         Err(e) => return err_unit(format!("spawn handler failed: {}", e)),
     };
     log(format!(
-        "[hello-web-acceptor] spawned handler {}",
+        "[wiki-acceptor] spawned handler {}",
         handler_id
     ));
 

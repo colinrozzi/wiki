@@ -1,0 +1,14 @@
+# PROD handler manifest — spawned per-connection by the acceptor.
+# The transferred connection is already TLS-terminated by the acceptor's listener,
+# so there is no server_tls here; the handler just reads the request and responds.
+#
+# DRAFT for the manager: (MANAGER) set the real absolute wasm path in the linode deploy dir.
+name = "wiki-handler"
+version = "0.1.0"
+package = "/var/lib/wiki/wiki_handler.wasm"
+
+[[handler]]
+type = "self"
+
+[[handler]]
+type = "tcp"

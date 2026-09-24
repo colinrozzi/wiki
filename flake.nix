@@ -1,5 +1,5 @@
 {
-  description = "hello-web — a minimal two-actor (acceptor + handler) HTTP server on Theater";
+  description = "wiki — a minimal two-actor (acceptor + handler) HTTP server on Theater";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
@@ -45,7 +45,7 @@
 
         commonArgs = {
           inherit src;
-          pname = "hello-web";
+          pname = "wiki";
           version = "0.1.0";
           cargoExtraArgs = "--target wasm32-unknown-unknown";
           CARGO_BUILD_TARGET = "wasm32-unknown-unknown";
@@ -60,8 +60,8 @@
           inherit cargoArtifacts;
           installPhaseCommand = ''
             mkdir -p $out
-            cp target/wasm32-unknown-unknown/release/hello_web_acceptor.wasm $out/
-            cp target/wasm32-unknown-unknown/release/hello_web_handler.wasm $out/
+            cp target/wasm32-unknown-unknown/release/wiki_acceptor.wasm $out/
+            cp target/wasm32-unknown-unknown/release/wiki_handler.wasm $out/
           '';
         });
 

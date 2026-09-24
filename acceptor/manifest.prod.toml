@@ -1,0 +1,42 @@
+# PROD acceptor manifest for the wiki front-end — TLS-terminating, actor-per-connection.
+#
+# DRAFT for the manager to finalize. Lines marked (MANAGER) need real linode values.
+# Deploy model mirrors website on linode: nix-copy the wasm to a deploy dir, run under
+# the existing supervisor/control plane as a GC-rooted service; the frontdoor SNI-routes
+# wiki.colinrozzi.com to this acceptor's listen port.
+name = "wiki-acceptor"
+version = "0.1.0"
+
+# (MANAGER) absolute path to the acceptor wasm in the linode deploy dir. Absolute paths
+# avoid the CWD-relative `package` gotcha entirely for a supervisor-run service.
+package = "/var/lib/wiki/wiki_acceptor.wasm"
+
+# listen: a fresh port (website uses :9444) — proposing :9450; change if it collides.
+# handler: absolute path so it resolves regardless of the theater process CWD.
+# tls=on here is intent/logging only — real TLS is the [handler.server_tls] block below.
+initial_state = "listen=0.0.0.0:9450;handler=/var/lib/wiki/handler.prod.toml;tls=on"
+
+# The acceptor spawns a handler per connection -> needs the supervisor capability.
+[permission_policy.supervisor]
+type = "inherit"
+
+[[handler]]
+type = "self"
+
+[[handler]]
+type = "tcp"
+
+# (MANAGER) TLS terminated in-actor with a cert valid for wiki.colinrozzi.com.
+# Reuse website's colinrozzi.com cert IF it is a wildcard (*.colinrozzi.com) or its SAN
+# covers wiki.colinrozzi.com; otherwise provision one. Confirm the actual linode paths
+# (these mirror a typical certbot layout and are placeholders).
+[handler.server_tls]
+enabled = true
+cert = "/etc/letsencrypt/live/colinrozzi.com/fullchain.pem"
+key = "/etc/letsencrypt/live/colinrozzi.com/privkey.pem"
+
+[[handler]]
+type = "supervisor"
+
+[[handler]]
+type = "rpc"

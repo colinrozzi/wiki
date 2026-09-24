@@ -96,7 +96,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "hello-web-acceptor"
+name = "wiki-acceptor"
 version = "0.1.0"
 dependencies = [
  "packr-abi",
@@ -105,7 +105,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "hello-web-handler"
+name = "wiki-handler"
 version = "0.1.0"
 dependencies = [
  "packr-guest",
